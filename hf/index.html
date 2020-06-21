@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="EUC-KR">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+	<title>주택금융공사 전화번호부</title>
+	<!-- Jquery Mobile용 css -->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="https://app.hf.go.kr/nhf/js/common/nhf-common.js"></script>
+	<script type="text/javascript">
+		$(document).on("pageinit", "#contacts_page", function(event){		
+			
+			$("#searchButton").click(function(){
+				
+				$.post(
+					"search.jsp",
+					{inputValue: $("#searchText").val()},
+					function(data){
+					    console.log("data = " +  JSON.stringify(data));
+						
+						var ul = $('#contactsUl');
+						ul.empty();
+						
+						$.each(data, function(index, contact){
+							
+							if(($("#searchText").val().indexOf('인') >= 0) && (contact.emp_no == '1241' || contact.emp_no == '1327')) {
+								return true;
+							}
+							
+							var li = $('<li/>')
+							.addClass('ui-li-static ui-body-inherit ui-li-has-thumb')
+							.css({'padding-left': '115px', 'padding-bottom': '22px'})
+							.appendTo(ul);
+							
+							var emp_img = $('<img/>')
+							.addClass('ui-li-thumb')
+							.attr('src', 'http://app.hf.go.kr/nhf' + '/img/hfFamily/emp_photo/p_'+contact.emp_no+'.jpg')
+							.css({'max-width': '88px', 'max-height':'108px', 'width':'88px', 'height':'auto', 'margin-top':'22px', 'margin-left':'15px', '-moz-border-radius':'10px', '-webkit-border-radius':'10px', 'border-radius':'10px'})
+							.appendTo(li);
+							
+							var h2 = $('<h2/>')
+							.addClass('ui-li-heading')
+							.text(contact.han_nm+" ")
+							.css('font-size','18px')
+							.appendTo(li);
+							
+							var span = $('<span/>')
+							.css('font-size','15px')
+							.text(contact.pos_cd_nm)
+							.appendTo(h2);
+							
+							var brcd_nm = contact.brcd_nm;
+							if(contact.emp_no == '1241' || contact.emp_no == '1327') {
+								brcd_nm = "　";
+							}
+							
+							var team_cd_nm = contact.team_cd_nm;
+							if(typeof team_cd_nm == "undefined"){
+								team_cd_nm = "";
+							}
+							
+							var p = $('<p/>')
+							.addClass('ui-li-desc')
+							.css('font-size','14px')
+							.text(brcd_nm + " " + team_cd_nm )
+							.appendTo(li);
+							
+							var div = $('<div/>')
+							.addClass('ul-li-desc')
+							.css('font-size','14px')
+							.appendTo(li);
+							
+							var div_1 = $('<div/>')
+							.css({'margin-top':'12px', 'min-height':'18px'})
+							.appendTo(div);
+							
+							if(contact.mobile_tel_no != null && contact.mobile_tel_no != '') {
+								var phone_img = $('<img/>')
+								.attr('src', baseUrl + webUrl + '/img/hfFamily/icon/phone-icon.png')
+								.css({'width':'20px', 'height':'20px', 'float':'left', 'margin-right':'5px'})
+								.appendTo(div_1);
+								
+								var mobile_a = $('<a/>')
+								.addClass('ui-link')
+								.attr('rel', 'external')
+								.attr('href', 'tel:'+contact.mobile_tel_no)
+								.text(contact.mobile_tel_no)
+								.appendTo(div_1);
+							}
+							
+							var div_2 = $('<div/>')
+							.css({'margin-top':'10px', 'min-height':'18px'})
+							.appendTo(div);
+							
+							
+							if(contact.office_tel_no != null && contact.office_tel_no != '') {
+								var mobile_img = $('<img/>')
+								.attr('src', 'http://app.hf.go.kr/nhf' + '/img/hfFamily/icon/mobile-icon.png')
+								.css({'width':'20px', 'height':'20px', 'float':'left', 'margin-right':'5px'})
+								.appendTo(div_2);
+								
+								var phone_a = $('<a/>')
+								.addClass('ui-link')
+								.attr('rel', 'external')
+								.attr('href', 'tel:'+contact.office_tel_no)
+								.text(contact.office_tel_no)
+								.appendTo(div_2);
+							}
+							
+						});
+						
+						$("img").each(function() {
+							$(this).error(function(){
+								$(this).attr("src", "http://app.hf.go.kr/nhf" + "/img/hfFamily/icon/noimg.gif");
+							});
+						});
+						
+					},"json"
+				);
+			});
+			
+			
+			
+		});
+		
+	</script>
+</head>
+<body>
+	<!-- Page -->
+	<div id="contacts_page" data-role="page">
+	
+		<!-- Header -->
+		<header data-role="header" data-tap-toggle="false" data-position="fixed"> 
+			<h1>전화번호 검색</h1>
+		</header>
+
+		<!-- Contents -->
+		<section data-role="content">
+
+			<article class="wrap_type1">
+				<div style="overflow:hidden;">
+					<div style="width: 75%; float: left; padding-left:3px;">
+						<input type="text" id="searchText" placeholder="부서(지사)명, 이름 또는 전화번호" style="padding:10px">
+					</div>
+					<div style="width: 20%; float: right; padding-right:3px;">
+						<input type="submit" id="searchButton" value="검색">
+					</div>
+				</div>
+				<ul id="contactsUl" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+				</ul>
+			</article>
+
+		</section>
+
+		<!-- Footer -->
+		<footer data-role="footer" data-position="fixed">
+			<h1></h1>
+			<a href="change_pass.html" data-rel="external" class="ui-btn-right" data-icon="gear" style="margin-top:0px">비밀번호 변경</a>	
+		</footer>
+		
+	</div>
+</body>	
+</html>

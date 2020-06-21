@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+
+<title>
+bada.ai Tic Tac Toe Methods
+</title>
+
+<body>
+
+<h2>bada.ai Tic Tac Toe</h2>
+
+<h3>Methods</h3>
+
+<p>An open source deep learning framework <a href="https://deeplearning4j.org">DL4J</a> was used to train a neural network.</p>
+
+<h4>Model architecture</h4>
+
+<p>
+<a href="https://en.wikipedia.org/wiki/Multilayer_perceptron">A multilayer perceptron (MLP)</a> was used.
+The input to the neural network consists of 9 &times; 3 nodes, followed by two hidden layers with two outputs. Each hidden layer also consists of 9 &times; 3 nodes.
+The network is used to evaluate a position estimating a value v(s) that predicts the outcome from position s of games for both players.
+</p>
+
+<h4>Reinforcement learning of  value networks</h4>
+
+<p>
+The weights of the value network were trained by regression
+on state-outcome pairs (s, z), using <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">Stochastic gradient descent (SGD)</a> to
+minimize the error between the predicted value v(s), and the corresponding outcome z.
+</p>
+
+<p>
+The trained agent played games with a random opponent, and
+the training data was randomly sampled from each game.
+The behavior policy during training was &epsilon;-greedy with &epsilon; annealed linearly from 1.0 to 0.1 over the first 90,000 games, and fixed at 0.1 thereafter.
+</p>
+
+<p>
+Three planes were used for the input features for the neural network, each plane describing player mark, opponent mark, and empty.
+</p>
+
+<p>
+The trained agents played games against an opponent which places moves 100% randomly.
+After playing about 5 million games against the opponent, the agent reached the human expert level.
+</p>
+
+<h4>Evaluation procedure</h4>
+
+<p>
+The trained agents were evaluated by playing each game against the random opponent 10,000 times. (The random opponent plays the game 100% randomly.)
+If the trained agent did not lose a single game during an evaluation, the training stops and the agent is considered to have reached the human expert level.
+</p>
+
+<h4>Hyperparameters</h4>
+
+<table>
+  <tr>
+    <th>Hyperparameters</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>minbatch size</td>
+    <td>16</td>
+    <td>Number of training cases over which each stochastic gradient descent (SGD) update is computed.</td>
+  </tr>
+  <tr>
+    <td>learning rate</td>
+    <td>0.0025</td>
+    <td>The learning rate used by SGD.</td>
+  </tr>
+  <tr>
+    <td>initial exploration</td>
+    <td>1.0</td>
+    <td>Initial value of &epsilon; in &epsilon;-greedy exploration.</td>
+  </tr>
+  <tr>
+    <td>final exploration</td>
+    <td>0.1</td>
+    <td>Final value of &epsilon; in &epsilon;-greedy exploration.</td>
+  </tr>
+  <tr>
+    <td>final exploration game</td>
+    <td>90,000</td>
+    <td>The number of games over which the initial value of &epsilon; is linearly annealed to its final value.</td>
+  </tr>
+</table>
+
+<h4>Code availability</h4>
+<p>
+The source code can be accessed at <a href="https://github.com/dhkim9549/mlptictactoe">https://github.com/dhkim9549/mlptictactoe</a>.<br>
+The user interface source code can be found at <a href="https://github.com/dhkim9549/tictactoe">https://github.com/dhkim9549/tictactoe</a>.
+</p>
+
+<h4>References</h4>
+<p>
+<li>Silver, David; Huang, Aja; Maddison, Chris J.; Guez, Arthur; Sifre, Laurent; Driessche, George van den; Schrittwieser, Julian; Antonoglou, Ioannis; Panneershelvam, Veda (2016). <a rel="nofollow" class="external text" href="http://www.nature.com/doifinder/10.1038/nature16961">"Mastering the game of Go with deep neural networks and tree search"</a>. <i>Nature</i>. <b>529</b> (7587): 484-489</li>
+<li>SMnih, V. et al (2015). <a rel="nofollow" class="external text" href="http://dx.doi.org/10.1038/nature14236">"Human-level control through deep reinforcement learning"</a>. <i>Nature</i>. <b>518</b> 529-533</li>
+</p>
+
+<h4>Author Information</h4>
+<p>
+Readers are welcome to comment on this site.
+Correspondence and requests for materials should be addressed to Dong-Hyun Kim (dhkim95@hotmail.com).
+</p>
+<hr>
+
+<p>Copyright &copy; 2017. <i>Dong-Hyun Kim</i> bada.ai is licensed Apache 2.0.</p>
+
+</body>
+</html>
